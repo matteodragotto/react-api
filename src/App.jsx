@@ -86,6 +86,7 @@ const App = () => {
                   <p className="card-text">
                     {post.content}
                   </p>
+                  <h6>Tag:</h6>
                   <p className="card-text">{post.tags.join(', ')}</p>
                   <div className="btn btn-danger" onClick={() => deletePostHandler(post.id)}>
                     <i className="fa-solid fa-trash-can"></i>
