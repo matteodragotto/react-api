@@ -15,19 +15,6 @@ const App = () => {
   const [posts, setPosts] = useState([])
   const [formData, setFormData] = useState(basicPostForm)
 
-
-  const submitHandler = (e) => {
-    e.preventDefault()
-  }
-
-  const changeHandler = (e) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [e.target.name]: e.target.value
-    }))
-    console.log(formData);
-  }
-
   const fetchPosts = () => {
 
     axios.get(`${postApiUrl}/posts`)
@@ -41,6 +28,25 @@ const App = () => {
 
   }
 
+  const submitHandler = (e) => {
+    e.preventDefault()
+  }
+
+  const changeHandler = (e) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [e.target.name]: e.target.value
+    }))
+    console.log(formData);
+  }
+
+  const deletePostHandler = (id) => {
+    axios.delete(`${postApiUrl}/posts/${id}`)
+      .then(res => {
+        fetchPosts()
+      })
+  }
+
   useEffect(() => {
     fetchPosts()
   }, [])
@@ -52,7 +58,7 @@ const App = () => {
         <div className="row">
           {posts.map(post => (
             <div className="col-12 col-md-4">
-              <div className="card my-2">
+              <div className="card my-2" key={post.id}>
                 <img src={post.image} alt={post.title} />
                 <div className="card-body">
                   <h5 className="card-text">
@@ -62,7 +68,7 @@ const App = () => {
                     {post.content}
                   </p>
                   <p className="card-text">{post.tags.join(', ')}</p>
-                  <div className="btn btn-danger">
+                  <div className="btn btn-danger" onClick={() => deletePostHandler(post.id)}>
                     <i className="fa-solid fa-trash-can"></i> Elimina
                   </div>
                 </div>
