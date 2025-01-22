@@ -47,6 +47,25 @@ const App = () => {
       })
   }
 
+  const addPostHandler = (e) => {
+
+
+    const newPostTags = formData.tags.split(',')
+
+    const newPost = { ...formData, tags: newPostTags }
+
+    axios.post(`${postApiUrl}/posts/`, newPost)
+      .then(res => {
+        setPosts(res.data)
+        setFormData(basicPostForm)
+      })
+
+    console.log(newPost);
+
+
+  }
+
+
   useEffect(() => {
     fetchPosts()
   }, [])
@@ -57,8 +76,8 @@ const App = () => {
         <h1 className="text-center">Il mio blog</h1>
         <div className="row">
           {posts.map(post => (
-            <div className="col-12 col-md-4">
-              <div className="card my-2" key={post.id}>
+            <div className="col-12 col-md-4" key={post.id}>
+              <div className="card my-2">
                 <img src={post.image} alt={post.title} />
                 <div className="card-body">
                   <h5 className="card-text">
@@ -119,14 +138,20 @@ const App = () => {
                   onChange={changeHandler}
                 />
               </div>
-              <h5 className="mt-3">Scegli dei tag</h5>
-              <div className="form-check m-3 p-3">
-                <input type='checkbox' className='form-check-input' name='tags' value='dolce' id='dolce' />
-                <label className="form-check-label" htmlFor='dolce'>
-                  Dolce
-                </label>
+              <div className="mb-2">
+                <label htmlFor="tags">Tags</label>
+                <input
+                  id='tags'
+                  type="text"
+                  name='tags'
+                  className='form-control'
+                  placeholder='Inserisci qui dei tag per il tuo post'
+                  value={formData.tags}
+                  onChange={changeHandler}
+                />
               </div>
-              <button type="submit" className="btn btn-primary">Carica nuovo post</button>
+
+              <button type="submit" className="btn btn-primary" onClick={addPostHandler}>Carica nuovo post</button>
 
             </form>
           </div>
