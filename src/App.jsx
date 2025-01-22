@@ -40,6 +40,10 @@ const App = () => {
       .then(res => {
         fetchPosts()
       })
+      .catch(error => {
+        console.error('Non è stato possibile cancellare il post:', error)
+      })
+
   }
 
   const addPostHandler = (e) => {
@@ -47,18 +51,17 @@ const App = () => {
 
     const newPostTags = formData.tags.split(',')
 
-    const newPost = { id: self.crypto.randomUUID(), ...formData, tags: newPostTags }
+    const newPost = { ...formData, tags: newPostTags }
 
-    axios.post(`${postApiUrl}/posts/`, newPost)
+    axios.post(`${postApiUrl}/posts`, newPost)
       .then(res => {
         setPosts(res.data)
         setFormData(basicPostForm)
-
-
+        console.log(res.data)
       })
-
-
-
+      .catch(error => {
+        console.error('Non è stato possibile aggiungere il post:', error)
+      })
 
   }
 
@@ -74,9 +77,9 @@ const App = () => {
         <div className="row">
           {posts.map(post => (
             <div className="col-12 col-md-4" key={post.id}>
-              <div className="card my-2">
+              <div className="card h my-2">
                 <img src={post.image} alt={post.title} />
-                <div className="card-body">
+                <div className="card-body text-overflow">
                   <h5 className="card-text">
                     {post.title}
                   </h5>
@@ -85,7 +88,7 @@ const App = () => {
                   </p>
                   <p className="card-text">{post.tags.join(', ')}</p>
                   <div className="btn btn-danger" onClick={() => deletePostHandler(post.id)}>
-                    <i className="fa-solid fa-trash-can"></i> Elimina
+                    <i className="fa-solid fa-trash-can"></i>
                   </div>
                 </div>
               </div>

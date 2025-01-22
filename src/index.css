@@ -4,6 +4,21 @@
   box-sizing: border-box;
 }
 
-.card-h {
+.h {
   height: 600px;
+}
+
+.text-overflow {
+  overflow: auto;
+}
+
+.card-body {
+  position: relative;
+
+  .btn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+
+  }
 }
