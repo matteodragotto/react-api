@@ -19,17 +19,12 @@ const App = () => {
 
     axios.get(`${postApiUrl}/posts`)
       .then(res => {
-        console.log(res.data);
         setPosts(res.data)
       })
       .catch(error => {
         console.error('Errore durante il caricamento dei post:', error)
       })
 
-  }
-
-  const submitHandler = (e) => {
-    e.preventDefault()
   }
 
   const changeHandler = (e) => {
@@ -48,19 +43,21 @@ const App = () => {
   }
 
   const addPostHandler = (e) => {
-
+    e.preventDefault();
 
     const newPostTags = formData.tags.split(',')
 
-    const newPost = { ...formData, tags: newPostTags }
+    const newPost = { id: self.crypto.randomUUID(), ...formData, tags: newPostTags }
 
     axios.post(`${postApiUrl}/posts/`, newPost)
       .then(res => {
         setPosts(res.data)
         setFormData(basicPostForm)
+
+
       })
 
-    console.log(newPost);
+
 
 
   }
@@ -101,7 +98,7 @@ const App = () => {
         <div className="card">
           <div className="card-body">
             <h3 className="card-text">Inserisci un nuovo post</h3>
-            <form action="#" onSubmit={submitHandler}>
+            <form action="#">
               <div className="mb-2">
                 <label htmlFor="name">Titolo del post</label>
                 <input
