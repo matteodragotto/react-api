@@ -4,7 +4,29 @@ import { useState, useEffect } from "react"
 const App = () => {
 
   const postApiUrl = 'http://localhost:3001'
+
+  const basicPostForm = {
+    title: '',
+    content: '',
+    image: '',
+    tags: ''
+  }
+
   const [posts, setPosts] = useState([])
+  const [formData, setFormData] = useState(basicPostForm)
+
+
+  const submitHandler = (e) => {
+    e.preventDefault()
+  }
+
+  const changeHandler = (e) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [e.target.name]: e.target.value
+    }))
+    console.log(formData);
+  }
 
   const fetchPosts = () => {
 
@@ -18,7 +40,6 @@ const App = () => {
       })
 
   }
-
 
   useEffect(() => {
     fetchPosts()
@@ -50,11 +71,12 @@ const App = () => {
           ))}
         </div>
       </div>
+
       <div className="container my-5">
         <div className="card">
           <div className="card-body">
             <h3 className="card-text">Inserisci un nuovo post</h3>
-            <form action="#">
+            <form action="#" onSubmit={submitHandler}>
               <div className="mb-2">
                 <label htmlFor="name">Titolo del post</label>
                 <input
@@ -63,6 +85,8 @@ const App = () => {
                   name='title'
                   className='form-control'
                   placeholder='Inserisci qui il titolo'
+                  value={formData.title}
+                  onChange={changeHandler}
                 />
               </div>
               <div className="mb-2">
@@ -73,6 +97,8 @@ const App = () => {
                   name='content'
                   className='form-control'
                   placeholder='Inserisci qui il commento'
+                  value={formData.content}
+                  onChange={changeHandler}
                 />
               </div>
               <div className="mb-2">
@@ -83,6 +109,8 @@ const App = () => {
                   name='image'
                   className='form-control'
                   placeholder='Inserisci qui la url della tua immagine'
+                  value={formData.image}
+                  onChange={changeHandler}
                 />
               </div>
               <h5 className="mt-3">Scegli dei tag</h5>
